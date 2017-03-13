@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TransferWiseCodeChallenge</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Spotify Strings -->
+    <string name="spotify_button_login">Login to Spotify</string>
+</resources>
