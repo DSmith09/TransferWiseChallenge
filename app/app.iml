@@ -103,27 +103,33 @@
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="spotify-player-24-noconnect-2.20b-" level="project" />
-    <orderEntry type="library" exported="" name="butterknife-annotations-8.5.1" level="project" />
-    <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
-    <orderEntry type="library" exported="" name="jackson-core-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="design-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="transition-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="spotify-android-auth-1.0.0-" level="project" />
+    <orderEntry type="library" exported="" name="support-core-ui-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="jsr250-api-1.0" level="project" />
+    <orderEntry type="library" exported="" name="android.joda-2.9.7" level="project" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="joda-time-2.9.7-no-tzdb" level="project" />
+    <orderEntry type="library" exported="" name="support-core-utils-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="support-fragment-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-annotations-8.5.1" level="project" />
+    <orderEntry type="library" exported="" name="spring-android-rest-template-1.0.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-core-2.4.1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-databind-2.3.2" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-compat-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="dagger-2.9" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-core-ui-25.2.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
-    <orderEntry type="library" exported="" name="jsr250-api-1.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-8.5.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="spring-android-core-1.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-core-utils-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-fragment-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-25.2.0" level="project" />
   </component>
 </module>

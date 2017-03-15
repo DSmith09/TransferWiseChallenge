@@ -1,6 +1,6 @@
 package com.example.dmsmith.transferwisecodechallenge.modules;
 
-import com.example.dmsmith.transferwisecodechallenge.spotify.SpotifyService;
+import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
 
 import javax.inject.Singleton;
 
@@ -10,7 +10,7 @@ import dagger.Provides;
 @Module
 public class SpotifyServiceModule {
 
-    SpotifyService mSpotifyService;
+    private SpotifyService mSpotifyService;
 
     public SpotifyServiceModule(SpotifyService spotifyService) {
         mSpotifyService = spotifyService;

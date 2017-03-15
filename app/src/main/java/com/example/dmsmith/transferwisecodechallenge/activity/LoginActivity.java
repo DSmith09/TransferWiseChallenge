@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.dmsmith.transferwisecodechallenge.MyApp;
 import com.example.dmsmith.transferwisecodechallenge.R;
-import com.example.dmsmith.transferwisecodechallenge.spotify.SpotifyService;
+import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
 import com.spotify.sdk.android.player.Spotify;
 
 import javax.inject.Inject;
@@ -24,8 +24,10 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     SpotifyService mSpotifyService;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.login_button) Button loginButton;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.login_button)
+    Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void injectDependencies() {
-        ((MyApp) getApplication()).getComponents().inject(this);
+        ((MyApp) getApplication()).getLoginActivityComponents().inject(this);
     }
 
     private void setOnClickListeners() {
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         mSpotifyService.handleCallback(this, requestCode, resultCode, intent);
+        startActivity(PlaylistsListActivity.newIntent(this));
     }
 
     @Override
