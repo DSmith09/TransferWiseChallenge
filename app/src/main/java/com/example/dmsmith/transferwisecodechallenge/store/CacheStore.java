@@ -45,4 +45,8 @@ public class CacheStore {
         }
         return mCacheMap.get(key);
     }
+
+    public void invalidateCache() {
+        mCacheMap = null;
+    }
 }

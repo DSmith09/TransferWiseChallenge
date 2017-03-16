@@ -20,6 +20,7 @@ import com.example.dmsmith.transferwisecodechallenge.modules.RestTemplateModule;
 import com.example.dmsmith.transferwisecodechallenge.modules.SpotifyServiceModule;
 import com.example.dmsmith.transferwisecodechallenge.network.RestInvokerClient;
 import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
+import com.example.dmsmith.transferwisecodechallenge.store.CacheStore;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -58,6 +59,13 @@ public class MyApp extends Application {
         mTrackPlayerFragmentComponents = DaggerTrackPlayerFragmentComponents.builder()
                 .spotifyServiceModule(new SpotifyServiceModule(spotifyService)).build();
 
+    }
+
+    // Tries to Invalidate Cached Data to prevent Memory Leak
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        CacheStore.getInstance().invalidateCache();
     }
 
     public LoginActivityComponents getLoginActivityComponents() {
