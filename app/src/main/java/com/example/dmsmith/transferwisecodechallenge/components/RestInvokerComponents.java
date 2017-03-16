@@ -1,7 +1,7 @@
 package com.example.dmsmith.transferwisecodechallenge.components;
 
 import com.example.dmsmith.transferwisecodechallenge.modules.RestTemplateModule;
-import com.example.dmsmith.transferwisecodechallenge.network.RestInvoker;
+import com.example.dmsmith.transferwisecodechallenge.network.RestInvokerClient;
 
 import javax.inject.Singleton;
 
@@ -11,5 +11,5 @@ import dagger.Component;
 @Component(modules = {RestTemplateModule.class})
 public interface RestInvokerComponents {
 
-    void inject(RestInvoker restInvoker);
+    void inject(RestInvokerClient restInvoker);
 }

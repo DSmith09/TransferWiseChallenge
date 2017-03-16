@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/explicit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/is_explicit_textView"
+        android:layout_toStartOf="@id/explicit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="@string/Track_is_explicit"/>
+
+    <TextView
+        android:id="@+id/playlist_track_name"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/is_explicit_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/playlist_track_duration"
+        android:layout_below="@id/playlist_track_name"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:textStyle="bold"
+        android:textSize="10sp"/>
+
+</RelativeLayout>

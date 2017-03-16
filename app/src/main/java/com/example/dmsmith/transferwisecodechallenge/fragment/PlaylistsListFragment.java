@@ -10,6 +10,7 @@ import com.example.dmsmith.transferwisecodechallenge.MyApp;
 import com.example.dmsmith.transferwisecodechallenge.R;
 import com.example.dmsmith.transferwisecodechallenge.activity.TracksListActivity;
 import com.example.dmsmith.transferwisecodechallenge.model.Playlist;
+import com.example.dmsmith.transferwisecodechallenge.model.paging.PlaylistTracks;
 import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
 import com.example.dmsmith.transferwisecodechallenge.store.PlaylistStore;
 
@@ -51,8 +52,8 @@ public class PlaylistsListFragment extends RecyclerListViewFragment {
 
         @Override
         public void onClick(View v) {
-            mSpotifyService.getTracksForPlaylist(mPlaylist.getTracks().getHref());
-            startActivity(TracksListActivity.newIntent(getActivity(), mPlaylist.getId()));
+            mSpotifyService.getTracksForPlaylist(mPlaylist.getTracks().getHref(), PlaylistTracks.class);
+            startActivity(TracksListActivity.newIntent(getActivity()));
         }
     }
 

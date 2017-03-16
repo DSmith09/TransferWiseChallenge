@@ -4,5 +4,6 @@
 
     <!-- Spotify Strings -->
     <string name="spotify_button_login">Login to Spotify</string>
+    <string name="Track_is_explicit">Explicit:</string>
     <string name="playlist_track_count">Track Count: %d</string>
 </resources>

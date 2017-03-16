@@ -8,13 +8,9 @@ import android.support.v4.app.Fragment;
 import com.example.dmsmith.transferwisecodechallenge.fragment.TracksListFragment;
 
 public class TracksListActivity extends SingleFragmentActivity {
-    private static final String EXTRA_PLAYLIST_ID = "com.example.dmsmith" +
-            ".transferwisecodechallenge.model.playlist.id";
 
-    public static Intent newIntent(Context packageContext, String playlistId) {
-        Intent intent = new Intent(packageContext, TracksListActivity.class);
-        intent.putExtra(EXTRA_PLAYLIST_ID, playlistId);
-        return intent;
+    public static Intent newIntent(Context packageContext) {
+        return new Intent(packageContext, TracksListActivity.class);
     }
 
     @Override

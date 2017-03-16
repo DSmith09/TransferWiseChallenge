@@ -4,7 +4,6 @@ package com.example.dmsmith.transferwisecodechallenge.spotify.enums;
 public enum Scopes {
     USER_READ_PRIVATE("user-read-private"),
     PLAYLIST_READ_PRIVATE("playlist-read-private"),
-    PLAYLIST_MODIFY_PUBLIC("playlist-modify-public"),
     STREAMING("streaming");
 
     private final String value;

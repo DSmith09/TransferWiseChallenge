@@ -12,7 +12,6 @@ import android.widget.Button;
 import com.example.dmsmith.transferwisecodechallenge.MyApp;
 import com.example.dmsmith.transferwisecodechallenge.R;
 import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
-import com.spotify.sdk.android.player.Spotify;
 
 import javax.inject.Inject;
 
@@ -82,6 +81,5 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Spotify.destroyPlayer(mSpotifyService);
     }
 }

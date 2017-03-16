@@ -1,16 +1,20 @@
 package com.example.dmsmith.transferwisecodechallenge.spotify.service;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
-import com.example.dmsmith.transferwisecodechallenge.model.paging.Playlists;
 import com.example.dmsmith.transferwisecodechallenge.model.paging.PlaylistTracks;
+import com.example.dmsmith.transferwisecodechallenge.model.paging.Playlists;
 import com.example.dmsmith.transferwisecodechallenge.network.RestInvoker;
+import com.example.dmsmith.transferwisecodechallenge.network.RestInvokerClient;
 import com.example.dmsmith.transferwisecodechallenge.spotify.enums.Endpoints;
 import com.example.dmsmith.transferwisecodechallenge.spotify.enums.Scopes;
 import com.example.dmsmith.transferwisecodechallenge.spotify.model.SpotifyEndpoint;
+import com.example.dmsmith.transferwisecodechallenge.store.CacheStore;
 import com.example.dmsmith.transferwisecodechallenge.store.PlaylistStore;
 import com.example.dmsmith.transferwisecodechallenge.store.PlaylistTrackStore;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -39,21 +43,16 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
             "transferwise-code-challenge-spotify-login://callback";
     private static final String SPOTIFY_BASE_URL = "https://api.spotify.com";
     private static final int REQUEST_CODE = 1337;
-
-    // Account Manager Constants
-    private static final String ACCOUNT_NAME = SPOTIFY_SERVICE;
-    private static final String ACCOUNT_TYPE = "Test";
+    private static final CacheStore CACHE_STORE = CacheStore.getInstance();
 
     // Dagger Injected Fields
-    private final AccountManager mAccountManager;
     private final RestInvoker mRestInvoker;
 
     private String mAuthToken;
     private Player mPlayer;
 
     @Inject
-    public SpotifyService(AccountManager accountManager, RestInvoker restInvoker) {
-        this.mAccountManager = accountManager;
+    public SpotifyService(RestInvoker restInvoker) {
         this.mRestInvoker = restInvoker;
     }
 
@@ -62,6 +61,10 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.add("Authorization", "Bearer " + mAuthToken);
         return httpHeaders;
+    }
+
+    public Player getPlayer() {
+        return mPlayer;
     }
 
     // Main Methods
@@ -99,18 +102,21 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
                             }
                         });
                 PlaylistStore.getInstance()
-                        .setPlaylists(Arrays.asList(getPlaylists().getPlaylists()));
+                        .setPlaylists(Arrays.asList(getPlaylists(Playlists.class).getPlaylists()));
             }
         }
     }
 
-    private Playlists getPlaylists() {
+    // Visible Only For Unit Testing Purposes
+    @VisibleForTesting
+    public <T> Playlists getPlaylists(Class<T> responseClass) {
         SpotifyEndpoint getPlaylistsEndpoint = Endpoints.GET_PLAYLIST.getEndpoint();
         try {
             String url = SPOTIFY_BASE_URL + getPlaylistsEndpoint.getEndpoint();
-            HttpHeaders headers = createHeaders();
             HttpMethod method = getPlaylistsEndpoint.getHttpMethod();
-            Playlists playlists = mRestInvoker.invokeService(url, method, null, headers, Playlists.class);
+            Playlists playlists = (Playlists) mRestInvoker
+                    .invokeService(url, method, null, createHeaders(), responseClass);
+
             PlaylistStore.getInstance().setPlaylists(Arrays.asList(playlists.getPlaylists()));
             return playlists;
         } catch (Exception e) {
@@ -119,14 +125,21 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
         }
     }
 
-    public PlaylistTracks getTracksForPlaylist(String href) {
+    public <T> PlaylistTracks getTracksForPlaylist(String href, Class<T> responseClass) {
+        Object cachedTracks = CACHE_STORE.getValue(href);
+        PlaylistTrackStore store = PlaylistTrackStore.getInstance();
+        if (cachedTracks != null) {
+            PlaylistTracks playlistTracks = (PlaylistTracks) cachedTracks;
+            store.setPlaylistTracks(Arrays.asList(playlistTracks.getPlaylistTracks()));
+            return playlistTracks;
+        }
         SpotifyEndpoint getTracksEndpoint = Endpoints.GET_TRACKS.getEndpoint();
         try {
-            String url = href;
-            HttpHeaders headers = createHeaders();
             HttpMethod method = getTracksEndpoint.getHttpMethod();
-            PlaylistTracks playlistTracks = mRestInvoker.invokeService(url, method, null, headers, PlaylistTracks.class);
-            PlaylistTrackStore.getInstance().setPlaylistTracks(Arrays.asList(playlistTracks.getPlaylistTracks()));
+            PlaylistTracks playlistTracks = (PlaylistTracks) mRestInvoker
+                    .invokeService(href, method, null, createHeaders(), responseClass);
+            CACHE_STORE.add(href, playlistTracks);
+            store.setPlaylistTracks(Arrays.asList(playlistTracks.getPlaylistTracks()));
             return playlistTracks;
         } catch (Exception e) {
             Log.e(SPOTIFY_SERVICE, "Exception thrown on GET TRACKS; RETURNING NULL", e);
@@ -134,18 +147,36 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
         }
     }
 
+    // Pull Image From Internet and set to ImageView; Fail Gracefully on Exception
+    public Bitmap getTrackAlbumArt(String href, String imageUrl) {
+        Object cachedImage = CACHE_STORE.getValue(href);
+        if (cachedImage != null) {
+            return (Bitmap) cachedImage;
+        }
+        byte[] result = null;
+        try {
+            result = mRestInvoker
+                    .invokeService(imageUrl, HttpMethod.GET, null, createHeaders(), byte[].class);
+        } catch (Exception e) {
+            Log.e(SPOTIFY_SERVICE, "Exception thrown on GET IMAGE; RETURNING NULL", e);
+        }
+        if (result != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(result, 0, result.length);
+            CACHE_STORE.add(href, bitmap);
+            return bitmap;
+        }
+        return null;
+    }
+
     // Callback Interface Methods
     @Override
     public void onLoggedIn() {
         Log.d(SPOTIFY_SERVICE, "User logged in");
-
-        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
     }
 
     @Override
     public void onLoggedOut() {
         Log.d(SPOTIFY_SERVICE, "User logged out");
-        mAccountManager.invalidateAuthToken(ACCOUNT_TYPE, mAuthToken);
     }
 
     @Override

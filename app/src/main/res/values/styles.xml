@@ -14,8 +14,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <!-- Spotify Button Styling -->
-    <style name="spotify_button">
+    <!-- Spotify Styling -->
+    <style name="spotify_button" parent="Theme.AppCompat">
         <item name="android:background">#1DB954</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>

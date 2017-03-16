@@ -16,7 +16,7 @@ public class Jackson2HttpMessageConverterFactory {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
 
