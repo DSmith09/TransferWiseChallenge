@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-
     defaultConfig {
         applicationId "com.example.dmsmith.transferwisecodechallenge"
         minSdkVersion 21
@@ -39,36 +40,28 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
-
     // Spotify Dependencies
     compile 'com.spotify.sdk:spotify-android-auth-1.0.0@aar'
     compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
-
     // Spring RESTTemplate - For Network
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
-
     // Jackson Dependency - For JSON Parsing
     compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
-
     // Butterknife Dependency - For View Injection
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     // Dagger 2 Dependency - For Dependency Injection
-    compile "com.google.dagger:dagger:2.9"
+    compile 'com.google.dagger:dagger:2.9'
     annotationProcessor "com.google.dagger:dagger-compiler:2.9"
     provided 'javax.annotation:jsr250-api:1.0'
-
     // Joda Time Dependency - For Accurate Timestamps
     compile 'net.danlew:android.joda:2.9.7'
-
     // Mockito/Roboeletric Dependency - For Unit Testing (CURRENTLY FAILING ON MAPPING)
     testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile "org.robolectric:robolectric:3.3.1"
-
+    testCompile 'org.robolectric:robolectric:3.3.1'
 }
