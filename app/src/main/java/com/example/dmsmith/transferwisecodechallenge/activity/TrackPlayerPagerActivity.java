@@ -47,8 +47,8 @@ public class TrackPlayerPagerActivity extends FragmentActivity {
             public Fragment getItem(int position) {
                 Track track = mPlaylistTracks.get(position).getTrack();
                 String imageUrl = track.getAlbum().getImages()[0].getUrl();
-                String trackHref = track.getHref();
-                return TrackPlayerFragment.newInstance(imageUrl, trackHref);
+                String trackUri = track.getUri();
+                return TrackPlayerFragment.newInstance(imageUrl, trackUri);
             }
 
             @Override

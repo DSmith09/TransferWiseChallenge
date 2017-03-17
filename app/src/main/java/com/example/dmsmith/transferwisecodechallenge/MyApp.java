@@ -21,6 +21,7 @@ import com.example.dmsmith.transferwisecodechallenge.modules.SpotifyServiceModul
 import com.example.dmsmith.transferwisecodechallenge.network.RestInvokerClient;
 import com.example.dmsmith.transferwisecodechallenge.spotify.service.SpotifyService;
 import com.example.dmsmith.transferwisecodechallenge.store.CacheStore;
+import com.spotify.sdk.android.player.Spotify;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -66,6 +67,13 @@ public class MyApp extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         CacheStore.getInstance().invalidateCache();
+    }
+
+    // Destroy Spotify Player on Application Termination
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        Spotify.destroyPlayer(this);
     }
 
     public LoginActivityComponents getLoginActivityComponents() {

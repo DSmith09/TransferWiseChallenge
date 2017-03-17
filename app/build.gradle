@@ -46,7 +46,7 @@ dependencies {
     compile 'com.android.support:design:25.2.0'
     // Spotify Dependencies
     compile 'com.spotify.sdk:spotify-android-auth-1.0.0@aar'
-    compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
+    compile 'com.spotify.sdk:spotify-player-1.0.0-beta13@aar'
     // Spring RESTTemplate - For Network
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'

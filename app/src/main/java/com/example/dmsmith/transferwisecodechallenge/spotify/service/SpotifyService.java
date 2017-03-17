@@ -10,7 +10,6 @@ import android.util.Log;
 import com.example.dmsmith.transferwisecodechallenge.model.paging.PlaylistTracks;
 import com.example.dmsmith.transferwisecodechallenge.model.paging.Playlists;
 import com.example.dmsmith.transferwisecodechallenge.network.RestInvoker;
-import com.example.dmsmith.transferwisecodechallenge.network.RestInvokerClient;
 import com.example.dmsmith.transferwisecodechallenge.spotify.enums.Endpoints;
 import com.example.dmsmith.transferwisecodechallenge.spotify.enums.Scopes;
 import com.example.dmsmith.transferwisecodechallenge.spotify.model.SpotifyEndpoint;
@@ -21,12 +20,8 @@ import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.Config;
-import com.spotify.sdk.android.player.ConnectionStateCallback;
-import com.spotify.sdk.android.player.Error;
 import com.spotify.sdk.android.player.Player;
-import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
-import com.spotify.sdk.android.player.SpotifyPlayer;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,7 +31,7 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
-public class SpotifyService implements SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
+public class SpotifyService {
     private static final String SPOTIFY_SERVICE = "SpotifyService";
     private static final String CLIENT_ID = "e8da04ad2f454866956c8f249b11f5fe";
     private static final String REDIRECT_URI =
@@ -63,10 +58,6 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
         return httpHeaders;
     }
 
-    public Player getPlayer() {
-        return mPlayer;
-    }
-
     // Main Methods
     public void authenticate(Activity context) {
         AuthenticationRequest.Builder arBuilder = new AuthenticationRequest.Builder(CLIENT_ID,
@@ -87,12 +78,10 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
                 mAuthToken = response.getAccessToken();
                 Config configPlayer = new Config(context, mAuthToken, CLIENT_ID);
                 Spotify.getPlayer(configPlayer, context,
-                        new SpotifyPlayer.InitializationObserver() {
+                        new Player.InitializationObserver() {
                             @Override
-                            public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                                mPlayer = spotifyPlayer;
-                                mPlayer.addNotificationCallback(SpotifyService.this);
-                                mPlayer.addConnectionStateCallback(SpotifyService.this);
+                            public void onInitialized(Player player) {
+                                mPlayer = player;
                             }
 
                             @Override
@@ -148,8 +137,8 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
     }
 
     // Pull Image From Internet and set to ImageView; Fail Gracefully on Exception
-    public Bitmap getTrackAlbumArt(String href, String imageUrl) {
-        Object cachedImage = CACHE_STORE.getValue(href);
+    public Bitmap getTrackAlbumArt(String uri, String imageUrl) {
+        Object cachedImage = CACHE_STORE.getValue(uri);
         if (cachedImage != null) {
             return (Bitmap) cachedImage;
         }
@@ -162,55 +151,24 @@ public class SpotifyService implements SpotifyPlayer.NotificationCallback, Conne
         }
         if (result != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(result, 0, result.length);
-            CACHE_STORE.add(href, bitmap);
+            CACHE_STORE.add(uri, bitmap);
             return bitmap;
         }
         return null;
     }
 
-    // Callback Interface Methods
-    @Override
-    public void onLoggedIn() {
-        Log.d(SPOTIFY_SERVICE, "User logged in");
-    }
-
-    @Override
-    public void onLoggedOut() {
-        Log.d(SPOTIFY_SERVICE, "User logged out");
-    }
-
-    @Override
-    public void onLoginFailed(Error error) {
-        Log.d(SPOTIFY_SERVICE, "Login failed");
-    }
-
-    @Override
-    public void onTemporaryError() {
-        Log.d(SPOTIFY_SERVICE, "Temporary error occurred");
-    }
-
-    @Override
-    public void onConnectionMessage(String s) {
-        Log.d(SPOTIFY_SERVICE, "Received connection message: " + s);
-    }
-
-    @Override
-    public void onPlaybackEvent(PlayerEvent playerEvent) {
-        Log.d(SPOTIFY_SERVICE, "Playback event received: " + playerEvent.name());
-        switch (playerEvent) {
-            // Handle event type as necessary
-            default:
-                break;
+    // Player Functions
+    public void startPlaying(String uri) {
+        if (mPlayer.isLoggedIn()) {
+            mPlayer.play(uri);
         }
     }
 
-    @Override
-    public void onPlaybackError(Error error) {
-        Log.d(SPOTIFY_SERVICE, "Playback error received: " + error.name());
-        switch (error) {
-            // Handle error type as necessary
-            default:
-                break;
-        }
+    public void pause() {
+        mPlayer.pause();
+    }
+
+    public void resume() {
+        mPlayer.resume();
     }
 }

@@ -61,7 +61,6 @@ public class TracksListFragment extends RecyclerListViewFragment {
 
         @Override
         public void onClick(View v) {
-            mSpotifyService.getPlayer().playUri(null, mPlaylistTrack.getTrack().getHref(), 0, 0);
             startActivity(
                     TrackPlayerPagerActivity.newIntent(getActivity(), mPlaylistTrack.getTrack()));
         }

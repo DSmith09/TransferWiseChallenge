@@ -1,5 +1,6 @@
 package com.example.dmsmith.transferwisecodechallenge.fragment;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,15 @@ public class PlaylistsListFragment extends RecyclerListViewFragment {
 
         @Override
         public void onClick(View v) {
-            mSpotifyService.getTracksForPlaylist(mPlaylist.getTracks().getHref(), PlaylistTracks.class);
+            PlaylistTracks playlistTracks = mSpotifyService
+                    .getTracksForPlaylist(mPlaylist.getTracks().getHref(), PlaylistTracks.class);
+            if (playlistTracks == null) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("System Not Responding")
+                        .setMessage("Could Not Retrieve Tracks").setCancelable(true)
+                        .create().show();
+                return;
+            }
             startActivity(TracksListActivity.newIntent(getActivity()));
         }
     }
